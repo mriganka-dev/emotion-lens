@@ -17,6 +17,9 @@ if not MODEL_PATH.is_absolute():
 MODEL_URL = os.getenv("MODEL_URL", "").strip()
 
 # Server and CORS settings
+HOST = os.getenv("HOST", "0.0.0.0")
+PORT = int(os.getenv("PORT", "8000"))
+
 _raw_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173")
 ALLOWED_ORIGINS = [origin.strip() for origin in _raw_origins.split(",") if origin.strip()]
 
