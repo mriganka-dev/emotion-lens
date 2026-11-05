@@ -46,17 +46,17 @@ Backend service for the Emotion Lens application. It accepts an uploaded image, 
 
 ### Start the Server
 ```powershell
-uvicorn app.main:app --host 0.0.0.0 --port 8000
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 For local development with automatic reload (note that reloading TensorFlow takes several seconds):
 ```powershell
-uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 Interactive API documentation is accessible at `http://localhost:8000/docs`.
 
 ### Run Tests
 ```powershell
-pytest -v
+python -m pytest -v
 ```
 
 ## API Reference
