@@ -85,10 +85,7 @@ describe("lib/api", () => {
   });
 
   it("maps network connection failures", async () => {
-    vi.stubGlobal(
-      "fetch",
-      vi.fn().mockRejectedValue(new TypeError("Failed to fetch")),
-    );
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("Failed to fetch")));
 
     const file = new File(["dummy"], "photo.jpg", { type: "image/jpeg" });
     await expect(analyzeImage(file)).rejects.toThrow(
@@ -102,10 +99,7 @@ describe("lib/api", () => {
       vi.fn().mockImplementation((_url, options) => {
         return new Promise((_, reject) => {
           options?.signal?.addEventListener("abort", () => {
-            const err = new DOMException(
-              "The operation was aborted.",
-              "AbortError",
-            );
+            const err = new DOMException("The operation was aborted.", "AbortError");
             reject(err);
           });
         });
@@ -116,9 +110,7 @@ describe("lib/api", () => {
     const file = new File(["dummy"], "photo.jpg", { type: "image/jpeg" });
     const promise = analyzeImage(file);
     vi.advanceTimersByTime(31000);
-    await expect(promise).rejects.toThrow(
-      "The analysis took too long. Please try again.",
-    );
+    await expect(promise).rejects.toThrow("The analysis took too long. Please try again.");
     vi.useRealTimers();
   });
 
@@ -132,9 +124,6 @@ describe("lib/api", () => {
     );
 
     const file = new File(["dummy"], "photo.jpg", { type: "image/jpeg" });
-    await expect(analyzeImage(file)).rejects.toThrow(
-      "Something went wrong. Please try again.",
-    );
+    await expect(analyzeImage(file)).rejects.toThrow("Something went wrong. Please try again.");
   });
 });
-

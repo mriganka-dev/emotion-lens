@@ -6,9 +6,7 @@ describe("lib/image", () => {
     const file = new File(["dummy"], "document.pdf", {
       type: "application/pdf",
     });
-    expect(validateFile(file)).toBe(
-      "Please choose a JPEG, PNG or WebP image.",
-    );
+    expect(validateFile(file)).toBe("Please choose a JPEG, PNG or WebP image.");
   });
 
   it("rejects files exceeding 25 MB", () => {
@@ -16,9 +14,7 @@ describe("lib/image", () => {
     const file = new File(["dummy"], "large.jpg", { type: "image/jpeg" });
     Object.defineProperty(file, "size", { value: 26 * 1024 * 1024 });
 
-    expect(validateFile(file)).toBe(
-      "This file is too large. Please choose a smaller photo.",
-    );
+    expect(validateFile(file)).toBe("This file is too large. Please choose a smaller photo.");
   });
 
   it("accepts valid JPEG, PNG and WebP files under 25 MB", () => {
@@ -39,4 +35,3 @@ describe("lib/image", () => {
     expect(result).toBe(smallFile);
   });
 });
-

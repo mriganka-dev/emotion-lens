@@ -65,9 +65,7 @@ function renderWithClient(ui: React.ReactElement) {
       mutations: { retry: false },
     },
   });
-  return render(
-    <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>,
-  );
+  return render(<QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>);
 }
 
 describe("Analyzer", () => {
@@ -83,9 +81,7 @@ describe("Analyzer", () => {
     vi.mocked(api.analyzeImage).mockResolvedValue(mockSuccessResponse);
 
     const { container } = renderWithClient(<Analyzer />);
-    const fileInput = container.querySelector(
-      'input[type="file"]',
-    ) as HTMLInputElement;
+    const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
 
     const validFile = new File(["fake image content"], "portrait.jpg", {
       type: "image/jpeg",
@@ -97,9 +93,7 @@ describe("Analyzer", () => {
       expect(api.analyzeImage).toHaveBeenCalled();
     });
 
-    expect(
-      await screen.findByRole("heading", { name: "Happy" }),
-    ).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Happy" })).toBeInTheDocument();
     expect(screen.getByText("Emotion breakdown")).toBeInTheDocument();
     expect(screen.getAllByText("82%").length).toBeGreaterThanOrEqual(1);
   });
@@ -108,9 +102,7 @@ describe("Analyzer", () => {
     vi.mocked(api.analyzeImage).mockResolvedValue(mockNoFaceResponse);
 
     const { container } = renderWithClient(<Analyzer />);
-    const fileInput = container.querySelector(
-      'input[type="file"]',
-    ) as HTMLInputElement;
+    const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
 
     const validFile = new File(["fake landscape content"], "scenery.jpg", {
       type: "image/jpeg",
@@ -125,16 +117,11 @@ describe("Analyzer", () => {
   });
 
   it("an API error shows the error message and a 'Try again' button", async () => {
-    const errorMsg =
-      "The analysis server is starting up. Please try again in a few seconds.";
-    vi.mocked(api.analyzeImage).mockRejectedValue(
-      new api.ApiError(503, errorMsg),
-    );
+    const errorMsg = "The analysis server is starting up. Please try again in a few seconds.";
+    vi.mocked(api.analyzeImage).mockRejectedValue(new api.ApiError(503, errorMsg));
 
     const { container } = renderWithClient(<Analyzer />);
-    const fileInput = container.querySelector(
-      'input[type="file"]',
-    ) as HTMLInputElement;
+    const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
 
     const validFile = new File(["fake content"], "photo.png", {
       type: "image/png",
@@ -144,16 +131,12 @@ describe("Analyzer", () => {
 
     expect(await screen.findByText("Analysis failed")).toBeInTheDocument();
     expect(screen.getByText(errorMsg)).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: "Try again" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Try again" })).toBeInTheDocument();
   });
 
   it("a wrong file type shows the file type message and sends no request", async () => {
     const { container } = renderWithClient(<Analyzer />);
-    const fileInput = container.querySelector(
-      'input[type="file"]',
-    ) as HTMLInputElement;
+    const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
 
     const wrongFile = new File(["document text"], "document.pdf", {
       type: "application/pdf",
@@ -162,9 +145,7 @@ describe("Analyzer", () => {
     fireEvent.change(fileInput, { target: { files: [wrongFile] } });
 
     await waitFor(() => {
-      expect(toast.error).toHaveBeenCalledWith(
-        "Please choose a JPEG, PNG or WebP image.",
-      );
+      expect(toast.error).toHaveBeenCalledWith("Please choose a JPEG, PNG or WebP image.");
     });
     expect(api.analyzeImage).not.toHaveBeenCalled();
   });

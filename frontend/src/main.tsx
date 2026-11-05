@@ -10,8 +10,7 @@ import App from "./App";
 import "./index.css";
 
 const queryClient = new QueryClient();
-const loadFeatures = () =>
-  import("motion/react").then((res) => res.domAnimation);
+const loadFeatures = () => import("motion/react").then((res) => res.domAnimation);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

@@ -47,4 +47,3 @@ describe("ScoreBars", () => {
     expect(screen.getByText("72%")).toHaveClass("font-semibold");
   });
 });
-
