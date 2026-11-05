@@ -142,3 +142,22 @@
 .tabular-numbers {
   font-variant-numeric: tabular-nums;
 }
+
+@keyframes scanline {
+  0% {
+    top: 0%;
+    opacity: 0.3;
+  }
+  50% {
+    top: calc(100% - 4px);
+    opacity: 0.9;
+  }
+  100% {
+    top: 0%;
+    opacity: 0.3;
+  }
+}
+
+.animate-scanline {
+  animation: scanline 2.4s ease-in-out infinite;
+}
