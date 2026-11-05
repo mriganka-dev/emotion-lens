@@ -5,7 +5,7 @@ export function Logo() {
   return (
     <Link
       to="/"
-      className="inline-flex items-center gap-2.5 rounded-xl transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      className="inline-flex min-h-[44px] items-center gap-2.5 rounded-xl transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       aria-label="Emotion Lens home"
     >
       <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-xs">

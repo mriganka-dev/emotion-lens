@@ -13,7 +13,7 @@ export function Header() {
               to="/"
               end
               className={({ isActive }) =>
-                `rounded-lg px-3 py-1.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                `inline-flex items-center min-h-[44px] rounded-lg px-3.5 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                   isActive
                     ? "font-semibold text-foreground"
                     : "font-medium text-muted-foreground hover:text-foreground"
@@ -25,7 +25,7 @@ export function Header() {
             <NavLink
               to="/about"
               className={({ isActive }) =>
-                `rounded-lg px-3 py-1.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                `inline-flex items-center min-h-[44px] rounded-lg px-3.5 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                   isActive
                     ? "font-semibold text-foreground"
                     : "font-medium text-muted-foreground hover:text-foreground"

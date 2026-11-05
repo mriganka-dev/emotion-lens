@@ -1,3 +1,4 @@
+import { m } from "motion/react";
 import { formatPercent } from "@/lib/format";
 
 interface ConfidenceRingProps {
@@ -39,8 +40,8 @@ export function ConfidenceRing({
           className="text-muted/40"
           strokeWidth={strokeWidth}
         />
-        {/* Progress meter */}
-        <circle
+        {/* Animated Progress meter */}
+        <m.circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
@@ -48,9 +49,10 @@ export function ConfidenceRing({
           stroke={colorVar}
           strokeWidth={strokeWidth}
           strokeDasharray={circumference}
-          strokeDashoffset={strokeDashoffset}
+          initial={{ strokeDashoffset: circumference }}
+          animate={{ strokeDashoffset }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
           strokeLinecap="round"
-          className="transition-all duration-500 ease-out"
         />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">

@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, m } from "motion/react";
 import { toast } from "sonner";
 import { EmotionCard } from "@/components/analyzer/EmotionCard";
 import { FaceSelector } from "@/components/analyzer/FaceSelector";
@@ -17,6 +18,7 @@ export function Analyzer() {
   const isOnline = useOnlineStatus();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedFaceId, setSelectedFaceId] = useState<number | null>(null);
+  const resultHeadingRef = useRef<HTMLHeadingElement | null>(null);
 
   const previewUrl = useImagePreview(selectedFile);
   const { analyze, reset, status, result, error } = useAnalyzeImage();
@@ -26,6 +28,13 @@ export function Analyzer() {
     selectedFaceId !== null && result?.faces.some((face) => face.id === selectedFaceId)
       ? selectedFaceId
       : (result?.faces[0]?.id ?? 0);
+
+  // Move focus to result heading when analysis finishes successfully
+  useEffect(() => {
+    if (status === "success" && result && result.faces.length > 0) {
+      resultHeadingRef.current?.focus();
+    }
+  }, [status, result]);
 
   const handleFile = useCallback(
     (file: File) => {
@@ -91,8 +100,23 @@ export function Analyzer() {
 
   const selectedFace = result?.faces.find((face) => face.id === activeFaceId) ?? result?.faces[0];
 
+  const selectedFaceIndex = result?.faces.findIndex((face) => face.id === activeFaceId) ?? 0;
+
+  // Live announcement text for screen readers
+  const liveAnnouncement =
+    status === "success" && selectedFace
+      ? `Face ${selectedFaceIndex + 1}: ${selectedFace.emotion}, ${Math.round(
+          selectedFace.confidence * 100,
+        )} percent confidence`
+      : "";
+
   return (
     <div className="w-full space-y-8">
+      {/* Visually hidden live region for screen readers */}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {liveAnnouncement}
+      </div>
+
       {/* State 1: Idle (Upload zone and sample photos) */}
       {!selectedFile && (
         <div className="space-y-6">
@@ -178,16 +202,28 @@ export function Analyzer() {
                     />
                   )}
 
-                  {/* Primary Emotion Result Card */}
-                  <EmotionCard face={selectedFace} />
+                  {/* Cross-fading Content when switching faces */}
+                  <AnimatePresence mode="wait">
+                    <m.div
+                      key={activeFaceId}
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.18, ease: "easeOut" }}
+                      className="space-y-6"
+                    >
+                      {/* Primary Emotion Result Card with Spring Animation */}
+                      <EmotionCard face={selectedFace} headingRef={resultHeadingRef} />
 
-                  {/* Full 7-Emotion Score Breakdown */}
-                  <div className="rounded-2xl border border-border bg-card p-6 shadow-xs">
-                    <h4 className="text-sm font-semibold tracking-tight text-foreground pb-4 border-b border-border mb-4">
-                      Emotion breakdown
-                    </h4>
-                    <ScoreBars scores={selectedFace.scores} />
-                  </div>
+                      {/* Full 7-Emotion Score Breakdown */}
+                      <div className="rounded-2xl border border-border bg-card p-6 shadow-xs">
+                        <h4 className="text-sm font-semibold tracking-tight text-foreground pb-4 border-b border-border mb-4">
+                          Emotion breakdown
+                        </h4>
+                        <ScoreBars scores={selectedFace.scores} />
+                      </div>
+                    </m.div>
+                  </AnimatePresence>
                 </div>
               )}
           </div>

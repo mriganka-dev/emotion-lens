@@ -77,13 +77,13 @@ export function UploadZone({ onFileAccepted, onError, disabled = false }: Upload
         </p>
 
         <div className="mt-6">
-          <span className="inline-flex items-center rounded-xl bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground shadow-xs transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+          <span className="inline-flex min-h-[44px] items-center rounded-xl bg-secondary px-5 py-2.5 text-sm font-medium text-secondary-foreground shadow-xs transition-all group-hover:bg-primary group-hover:text-primary-foreground group-active:scale-98">
             Browse files
           </span>
         </div>
       </div>
 
-      {/* Secondary Take a Photo Button (Camera Capture) */}
+      {/* Secondary Take a Photo Button (Camera Capture) with 44px min target */}
       <div className="flex justify-center">
         <input
           ref={cameraInputRef}
@@ -96,10 +96,10 @@ export function UploadZone({ onFileAccepted, onError, disabled = false }: Upload
         <Button
           type="button"
           variant="outline"
-          size="sm"
+          size="default"
           disabled={disabled}
           onClick={() => cameraInputRef.current?.click()}
-          className="gap-2 text-xs"
+          className="gap-2 text-xs min-h-[44px] active:scale-98"
         >
           <Camera className="size-4" />
           Take a photo

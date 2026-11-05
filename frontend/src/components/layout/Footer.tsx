@@ -9,7 +9,7 @@ export function Footer() {
         </p>
         <Link
           to="/about"
-          className="rounded-md underline-offset-4 hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="inline-flex min-h-[44px] items-center rounded-md px-2 py-1 underline-offset-4 hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           About
         </Link>

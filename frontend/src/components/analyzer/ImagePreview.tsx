@@ -47,14 +47,14 @@ export function ImagePreview({
         />
       )}
 
-      {/* Change Photo Shortcut Button */}
+      {/* Change Photo Shortcut Button with 44px minimum touch target */}
       {onChooseAnother && (
         <button
           type="button"
           onClick={onChooseAnother}
           aria-label="Choose another photo"
           title="Choose another photo"
-          className="absolute top-3 right-3 flex size-9 items-center justify-center rounded-xl bg-background/80 text-foreground backdrop-blur-sm transition-all hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring shadow-xs"
+          className="absolute top-3 right-3 flex size-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-xl bg-background/85 text-foreground backdrop-blur-sm transition-all hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring shadow-xs active:scale-95"
         >
           <RefreshCw className="size-4" />
         </button>

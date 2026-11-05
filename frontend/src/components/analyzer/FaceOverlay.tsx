@@ -1,3 +1,4 @@
+import { m } from "motion/react";
 import { EmotionIcon } from "@/components/analyzer/EmotionIcon";
 import { EMOTIONS_BY_LABEL } from "@/lib/emotions";
 import type { FaceResult } from "@/types/api";
@@ -33,17 +34,19 @@ export function FaceOverlay({
         const widthPercent = (face.box.width / imageWidth) * 100;
         const heightPercent = (face.box.height / imageHeight) * 100;
 
-        // Threshold to determine if box is too compact to show full chip
         const isCompact = widthPercent < 14;
 
         return (
-          <button
+          <m.button
             key={face.id}
             type="button"
             onClick={() => onSelectFace(face.id)}
             aria-label={`Face ${index + 1}, ${face.emotion}`}
             aria-pressed={isSelected}
-            className={`pointer-events-auto absolute rounded-xl transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.2, delay: index * 0.04, ease: "easeOut" }}
+            className={`pointer-events-auto absolute rounded-xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
               isSelected
                 ? "border-2 shadow-md ring-1 ring-black/20"
                 : "border border-white/70 bg-white/10 hover:border-white hover:bg-white/20"
@@ -79,7 +82,7 @@ export function FaceOverlay({
                 <span>{face.emotion}</span>
               </span>
             )}
-          </button>
+          </m.button>
         );
       })}
     </div>

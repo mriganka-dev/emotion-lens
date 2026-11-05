@@ -1,3 +1,4 @@
+import { m } from "motion/react";
 import { EmotionIcon } from "@/components/analyzer/EmotionIcon";
 import { EMOTIONS_BY_LABEL } from "@/lib/emotions";
 import { formatPercent } from "@/lib/format";
@@ -37,21 +38,23 @@ export function ScoreBars({ scores }: ScoreBarsProps) {
 
             {/* Scale-X Bar Track */}
             <div
-              className="relative h-2 flex-1 rounded-full bg-muted/60 overflow-hidden"
+              className="relative h-2.5 flex-1 rounded-full bg-muted/60 overflow-hidden"
               aria-hidden="true"
             >
-              <div
-                className="absolute inset-y-0 left-0 w-full rounded-full transition-transform duration-300 ease-out"
+              <m.div
+                className="absolute inset-y-0 left-0 w-full rounded-full"
                 style={{
                   backgroundColor: isTop ? highlightColor : "var(--muted-foreground)",
                   opacity: isTop ? 1 : 0.45,
-                  transform: `scaleX(${Math.max(0, Math.min(score.score, 1))})`,
                   transformOrigin: "left",
                 }}
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: Math.max(0, Math.min(score.score, 1)) }}
+                transition={{ duration: 0.5, delay: index * 0.04, ease: "easeOut" }}
               />
             </div>
 
-            {/* Percentage */}
+            {/* Percentage with tabular numbers */}
             <span
               className={`w-12 text-right tabular-numbers text-xs shrink-0 ${
                 isTop ? "font-semibold text-foreground" : "text-muted-foreground"
