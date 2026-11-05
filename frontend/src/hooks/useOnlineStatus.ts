@@ -21,4 +21,3 @@ function subscribe(callback: () => void): () => void {
 export function useOnlineStatus(): boolean {
   return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
-
