@@ -1,56 +1,69 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router";
-import { Analyzer } from "@/components/analyzer/Analyzer";
-import { ErrorBoundary } from "@/components/layout/ErrorBoundary";
+import { lazy, Suspense, useEffect } from "react";
+import { Route, Routes, useLocation } from "react-router";
 import { Layout } from "@/components/layout/Layout";
-import { Toaster } from "@/components/ui/sonner";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useWarmBackend } from "@/hooks/useWarmBackend";
+import HomePage from "@/pages/HomePage";
 
-const queryClient = new QueryClient();
+const AboutPage = lazy(() => import("@/pages/AboutPage"));
+const NotFoundPage = lazy(() => import("@/pages/NotFoundPage"));
 
-function HomePage() {
+function PageFallback() {
   return (
-    <div className="space-y-8">
-      <div className="space-y-2 text-center sm:text-left">
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-          Upload a photo. See the emotion.
-        </h1>
-        <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
-          Emotion Lens reads the facial expression of each person in a photo and shows what it
-          finds.
-        </p>
+    <div className="space-y-6" aria-busy="true" aria-label="Loading page">
+      <Skeleton className="h-10 w-56 rounded-xl" />
+      <Skeleton className="h-4 w-full max-w-xl rounded-md" />
+      <div className="grid gap-6 pt-4 sm:grid-cols-2">
+        <Skeleton className="h-40 rounded-2xl" />
+        <Skeleton className="h-40 rounded-2xl" />
       </div>
-
-      <Analyzer />
     </div>
   );
 }
 
-function AboutPage() {
-  return (
-    <div className="max-w-2xl space-y-4">
-      <h1 className="text-3xl font-semibold tracking-tight">About Emotion Lens</h1>
-      <p className="text-muted-foreground leading-relaxed">
-        A facial expression is not the same as a feeling, and the result can be wrong. Photos are
-        analyzed on the server and are not stored.
-      </p>
-    </div>
-  );
+function RouteTitle() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/") {
+      document.title = "Emotion Lens";
+    } else if (location.pathname === "/about") {
+      document.title = "About - Emotion Lens";
+    } else {
+      document.title = "Page Not Found - Emotion Lens";
+    }
+  }, [location.pathname]);
+
+  return null;
 }
 
 export default function App() {
+  useWarmBackend();
+
   return (
-    <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <Routes>
-            <Route element={<Layout />}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/about" element={<AboutPage />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-        <Toaster />
-      </QueryClientProvider>
-    </ErrorBoundary>
+    <>
+      <RouteTitle />
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/about"
+            element={
+              <Suspense fallback={<PageFallback />}>
+                <AboutPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <Suspense fallback={<PageFallback />}>
+                <NotFoundPage />
+              </Suspense>
+            }
+          />
+        </Route>
+      </Routes>
+    </>
   );
 }
