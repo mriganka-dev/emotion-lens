@@ -2,16 +2,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-const emotions = [
-  { name: "Happy", color: "var(--emotion-happy)", bg: "var(--emotion-happy-bg)" },
-  { name: "Sad", color: "var(--emotion-sad)", bg: "var(--emotion-sad-bg)" },
-  { name: "Angry", color: "var(--emotion-angry)", bg: "var(--emotion-angry-bg)" },
-  { name: "Neutral", color: "var(--emotion-neutral)", bg: "var(--emotion-neutral-bg)" },
-  { name: "Disgust", color: "var(--emotion-disgust)", bg: "var(--emotion-disgust-bg)" },
-  { name: "Surprise", color: "var(--emotion-surprise)", bg: "var(--emotion-surprise-bg)" },
-  { name: "Fear", color: "var(--emotion-fear)", bg: "var(--emotion-fear-bg)" },
-];
+import { EMOTIONS } from "@/lib/emotions";
+import { formatPercent } from "@/lib/format";
 
 export default function App() {
   const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains("dark"));
@@ -77,23 +69,32 @@ export default function App() {
               Seven muted emotion palettes with soft tinted background variants.
             </p>
             <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
-              {emotions.map((item) => (
-                <div
-                  key={item.name}
-                  className="flex items-center justify-between rounded-xl border p-2.5"
-                  style={{ backgroundColor: item.bg, borderColor: item.color }}
-                >
-                  <span className="text-xs font-medium" style={{ color: item.color }}>
-                    {item.name}
-                  </span>
-                  <span
-                    className="tabular-numbers text-xs font-semibold"
-                    style={{ color: item.color }}
+              {EMOTIONS.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.label}
+                    className="flex items-center justify-between rounded-xl border p-2.5"
+                    style={{
+                      backgroundColor: item.bgVar,
+                      borderColor: item.colorVar,
+                    }}
                   >
-                    98%
-                  </span>
-                </div>
-              ))}
+                    <div className="flex items-center gap-1.5">
+                      <Icon className="h-4 w-4" style={{ color: item.colorVar }} />
+                      <span className="text-xs font-medium" style={{ color: item.colorVar }}>
+                        {item.label}
+                      </span>
+                    </div>
+                    <span
+                      className="tabular-numbers text-xs font-semibold"
+                      style={{ color: item.colorVar }}
+                    >
+                      {formatPercent(0.98)}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
