@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, type ChangeEvent } from "react";
 import { useDropzone } from "react-dropzone";
 import { Camera, ImageUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -42,7 +42,7 @@ export function UploadZone({ onFileAccepted, onError, disabled = false }: Upload
     },
   });
 
-  const handleCameraChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCameraChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       onFileAccepted(file);
