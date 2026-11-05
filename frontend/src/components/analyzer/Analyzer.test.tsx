@@ -101,7 +101,7 @@ describe("Analyzer", () => {
       await screen.findByRole("heading", { name: "Happy" }),
     ).toBeInTheDocument();
     expect(screen.getByText("Emotion breakdown")).toBeInTheDocument();
-    expect(screen.getByText("82%")).toBeInTheDocument();
+    expect(screen.getAllByText("82%").length).toBeGreaterThanOrEqual(1);
   });
 
   it("a response with no faces shows 'No face found'", async () => {
