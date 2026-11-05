@@ -1,21 +1,29 @@
 import { useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useAnalyzeImage } from "@/hooks/useAnalyzeImage";
+import { useImagePreview } from "@/hooks/useImagePreview";
+import { useOnlineStatus } from "@/hooks/useOnlineStatus";
+import { useTheme } from "@/hooks/useTheme";
+import { useWarmBackend } from "@/hooks/useWarmBackend";
 import { EMOTIONS } from "@/lib/emotions";
 import { formatPercent } from "@/lib/format";
 
-export default function App() {
-  const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains("dark"));
+const queryClient = new QueryClient();
+
+function HooksVerification() {
+  const { theme, setTheme } = useTheme();
+  const isOnline = useOnlineStatus();
+  useWarmBackend();
+
+  const [testFile] = useState<File | null>(null);
+  const previewUrl = useImagePreview(testFile);
+  const { status, result, error } = useAnalyzeImage();
 
   const toggleTheme = () => {
-    const nextDark = !isDark;
-    setIsDark(nextDark);
-    if (nextDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
   return (
@@ -25,21 +33,29 @@ export default function App() {
           <div>
             <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Emotion Lens</h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              Design system and token verification
+              Design system, lib and hooks verification
             </p>
           </div>
-          <Button variant="outline" onClick={toggleTheme}>
-            Toggle {isDark ? "Light" : "Dark"} Mode
-          </Button>
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-muted-foreground">
+              {isOnline ? "Online" : "Offline"} | Theme: {theme}
+            </span>
+            <Button variant="outline" onClick={toggleTheme}>
+              Toggle Theme
+            </Button>
+          </div>
         </header>
 
         <section className="mt-8 grid gap-6 md:grid-cols-2">
-          {/* Tokens & Radii Verification */}
+          {/* Surface & Hooks Status */}
           <div className="rounded-2xl border bg-card p-6 shadow-xs">
-            <h2 className="text-lg font-medium">Design Tokens and Surface Radii</h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Cards use 16px radius, buttons 12px, and pills full rounding.
-            </p>
+            <h2 className="text-lg font-medium">Hooks Status</h2>
+            <div className="mt-4 space-y-2 text-sm text-muted-foreground">
+              <p>Analysis status: {status}</p>
+              <p>Preview active: {previewUrl ? "Yes" : "None"}</p>
+              <p>Result payload: {result ? "Available" : "None"}</p>
+              <p>Error payload: {error ? error.message : "None"}</p>
+            </div>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button>Primary Button</Button>
               <Button variant="secondary">Secondary</Button>
@@ -100,5 +116,13 @@ export default function App() {
         </section>
       </main>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <HooksVerification />
+    </QueryClientProvider>
   );
 }

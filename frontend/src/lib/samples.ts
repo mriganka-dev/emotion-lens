@@ -4,4 +4,3 @@ export interface SamplePhoto {
 }
 
 export const SAMPLE_PHOTOS: readonly SamplePhoto[] = [];
-
