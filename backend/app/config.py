@@ -9,14 +9,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
 # Model settings
-_model_path_env = os.getenv("MODEL_PATH", "assets/simple_cnn.keras")
+_model_path_env = os.getenv("MODEL_PATH", "assets/resnext_224_32_10_50.keras")
 MODEL_PATH = Path(_model_path_env)
 if not MODEL_PATH.is_absolute():
     MODEL_PATH = BASE_DIR / MODEL_PATH
 
 MODEL_URL = os.getenv("MODEL_URL", "").strip()
 
-# Server and CORS settings
+# Server and network settings
 HOST = os.getenv("HOST", "0.0.0.0")
 PORT = int(os.getenv("PORT", "8000"))
 
@@ -39,7 +39,7 @@ LABELS = [
     "Neutral",
 ]
 
-INPUT_SIZE = 112
+INPUT_SIZE = int(os.getenv("INPUT_SIZE", "224"))
 LOW_CONFIDENCE = 0.5
 
 # Image upload limits and supported formats
