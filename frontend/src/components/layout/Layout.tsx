@@ -13,9 +13,7 @@ export function Layout() {
       </a>
       <Header />
       <main id="main-content" tabIndex={-1} className="flex-1 outline-none">
-        <div className="mx-auto w-full max-w-[1152px] px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-          <Outlet />
-        </div>
+        <Outlet />
       </main>
       <Footer />
     </div>
