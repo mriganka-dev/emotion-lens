@@ -1,6 +1,6 @@
 import { AlternatingFeatures } from "@/components/home/AlternatingFeatures";
 import { ChapterCards } from "@/components/home/ChapterCards";
-import { HeroGhibli } from "@/components/home/HeroGhibli";
+import { EvolveHero } from "@/components/home/EvolveHero";
 import { InteractiveWordGrid } from "@/components/home/InteractiveWordGrid";
 import { SkyBreakBanner } from "@/components/home/SkyBreakBanner";
 import { StudioSection } from "@/components/home/StudioSection";
@@ -24,8 +24,8 @@ export default function HomePage() {
 
   return (
     <div className="w-full">
-      {/* 1. Illustrated Ghibli Anime Hero */}
-      <HeroGhibli
+      {/* 1. Precision Evolve Biometric Hero */}
+      <EvolveHero
         onScrollToStudio={scrollToStudio}
         onScrollToChapters={scrollToChapters}
       />

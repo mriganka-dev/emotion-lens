@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router";
 import { Camera } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
@@ -5,9 +6,22 @@ import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
 export function Header() {
   const location = useLocation();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const isHomePage = location.pathname === "/";
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Appear when scrolled past ~70% of the viewport height on home page
+      setIsScrolled(window.scrollY > window.innerHeight * 0.7);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleScrollToStudio = () => {
-    if (location.pathname === "/") {
+    if (isHomePage) {
       const el = document.getElementById("studio");
       if (el) {
         el.scrollIntoView({ behavior: "smooth" });
@@ -16,8 +30,16 @@ export function Header() {
     }
   };
 
+  const shouldShow = !isHomePage || isScrolled;
+
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/80 backdrop-blur-md transition-colors">
+    <header
+      className={`fixed top-0 inset-x-0 z-40 w-full border-b border-border/50 bg-background/85 text-foreground backdrop-blur-md shadow-xs transition-all duration-300 ${
+        shouldShow
+          ? "translate-y-0 opacity-100"
+          : "-translate-y-full opacity-0 pointer-events-none"
+      }`}
+    >
       <div className="mx-auto flex h-16 max-w-[1152px] items-center justify-between px-4 sm:px-6 lg:px-8">
         <Logo />
 
