@@ -15,8 +15,9 @@ ENV/
 !.env.example
 !.env.example
 
-# Large model assets tracked via Git LFS
+# Large model assets tracked via Git LFS or generated locally
 # assets/*.keras
+assets/*.pt
 
 # Testing and cache
 .pytest_cache/
