@@ -14,7 +14,7 @@ export function ScoreBars({ scores }: ScoreBarsProps) {
       {scores.map((score, index) => {
         const isTop = index === 0;
         const meta = EMOTIONS_BY_LABEL[score.label];
-        const highlightColor = meta?.colorVar ?? "var(--primary)";
+        const highlightColor = meta?.colorVar ?? "#4c97ff";
 
         return (
           <div key={score.label} className="flex items-center gap-3 text-sm" role="listitem">
@@ -22,14 +22,14 @@ export function ScoreBars({ scores }: ScoreBarsProps) {
             <div className="flex w-28 items-center gap-2 shrink-0">
               <span
                 style={{
-                  color: isTop ? highlightColor : "var(--muted-foreground)",
+                  color: isTop ? highlightColor : "rgba(255, 255, 255, 0.4)",
                 }}
               >
-                <EmotionIcon label={score.label} size={16} />
+                <EmotionIcon label={score.label} size={15} />
               </span>
               <span
-                className={`truncate ${
-                  isTop ? "font-medium text-foreground" : "text-muted-foreground"
+                className={`truncate font-mono text-xs uppercase tracking-wider ${
+                  isTop ? "font-medium text-white" : "text-white/60"
                 }`}
               >
                 {score.label}
@@ -38,14 +38,14 @@ export function ScoreBars({ scores }: ScoreBarsProps) {
 
             {/* Scale-X Bar Track */}
             <div
-              className="relative h-2.5 flex-1 rounded-full bg-muted/60 overflow-hidden"
+              className="relative h-2 flex-1 rounded-xs bg-white/10 overflow-hidden"
               aria-hidden="true"
             >
               <m.div
-                className="absolute inset-y-0 left-0 w-full rounded-full"
+                className="absolute inset-y-0 left-0 w-full rounded-xs"
                 style={{
-                  backgroundColor: isTop ? highlightColor : "var(--muted-foreground)",
-                  opacity: isTop ? 1 : 0.45,
+                  backgroundColor: isTop ? highlightColor : "rgba(255, 255, 255, 0.3)",
+                  opacity: isTop ? 1 : 0.6,
                   transformOrigin: "left",
                 }}
                 initial={{ scaleX: 0 }}
@@ -56,8 +56,8 @@ export function ScoreBars({ scores }: ScoreBarsProps) {
 
             {/* Percentage with tabular numbers */}
             <span
-              className={`w-12 text-right tabular-numbers text-xs shrink-0 ${
-                isTop ? "font-semibold text-foreground" : "text-muted-foreground"
+              className={`w-12 text-right tabular-numbers font-mono text-xs shrink-0 ${
+                isTop ? "font-semibold text-white" : "text-white/50"
               }`}
             >
               {formatPercent(score.score)}

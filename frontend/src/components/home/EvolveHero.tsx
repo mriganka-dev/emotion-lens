@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { ScanFace } from "lucide-react";
 import { EvolveBiometricVisual } from "@/components/home/EvolveBiometricVisual";
-import { loadSampleIntoStudio } from "@/lib/samples";
 
 interface EvolveHeroProps {
-  onScrollToStudio: () => void;
-  onScrollToChapters: () => void;
+  onScrollToExplore?: () => void;
 }
 
-export function EvolveHero({ onScrollToStudio, onScrollToChapters }: EvolveHeroProps) {
+export function EvolveHero({ onScrollToExplore }: EvolveHeroProps) {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isPreloaderDone, setIsPreloaderDone] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -31,9 +30,10 @@ export function EvolveHero({ onScrollToStudio, onScrollToChapters }: EvolveHeroP
     return () => clearInterval(interval);
   }, []);
 
+  const navigate = useNavigate();
+
   const handleStartScanning = () => {
-    loadSampleIntoStudio("/samples/joy-elena.jpg");
-    onScrollToStudio();
+    navigate("/scan");
   };
 
   return (
@@ -152,22 +152,12 @@ export function EvolveHero({ onScrollToStudio, onScrollToChapters }: EvolveHeroP
           className="flex items-center gap-12 font-mono text-xs uppercase tracking-wider text-white/80 max-md:absolute max-md:top-14 max-md:left-0 max-md:hidden max-md:w-48 max-md:flex-col max-md:items-stretch max-md:gap-0 max-md:rounded-lg max-md:border max-md:border-white/20 max-md:bg-black/90 max-md:p-2 max-md:backdrop-blur-xl max-md:data-[open=true]:flex"
         >
           <li>
-            <button
-              type="button"
-              onClick={onScrollToStudio}
-              className="hover:text-white transition-opacity focus-visible:outline-none max-md:px-3 max-md:py-2.5 max-md:text-left"
+            <Link
+              to="/scan"
+              className="text-[#8dd8ff] font-semibold hover:text-white transition-opacity focus-visible:outline-none max-md:px-3 max-md:py-2.5 max-md:block"
             >
-              Studio
-            </button>
-          </li>
-          <li>
-            <button
-              type="button"
-              onClick={onScrollToChapters}
-              className="hover:text-white transition-opacity focus-visible:outline-none max-md:px-3 max-md:py-2.5 max-md:text-left"
-            >
-              Curriculum
-            </button>
+              Scanner
+            </Link>
           </li>
           <li>
             <a
@@ -175,6 +165,14 @@ export function EvolveHero({ onScrollToStudio, onScrollToChapters }: EvolveHeroP
               className="hover:text-white transition-opacity focus-visible:outline-none max-md:px-3 max-md:py-2.5 max-md:block"
             >
               Pipeline
+            </a>
+          </li>
+          <li>
+            <a
+              href="#spectrum"
+              className="hover:text-white transition-opacity focus-visible:outline-none max-md:px-3 max-md:py-2.5 max-md:block"
+            >
+              Spectrum
             </a>
           </li>
           <li>
@@ -192,8 +190,8 @@ export function EvolveHero({ onScrollToStudio, onScrollToChapters }: EvolveHeroP
       <div className="absolute top-9 left-1/2 -translate-x-1/2 z-20 max-xl:hidden">
         <button
           type="button"
-          onClick={onScrollToStudio}
-          aria-label="Scroll down to studio"
+          onClick={onScrollToExplore}
+          aria-label="Scroll down to explore"
           className="transition-transform duration-300 hover:translate-y-1 focus-visible:outline-none"
         >
           <svg width="27" height="11" viewBox="0 0 27 11" fill="none">
@@ -254,26 +252,74 @@ export function EvolveHero({ onScrollToStudio, onScrollToChapters }: EvolveHeroP
         </button>
       </div>
 
-      {/* 7. Asymmetric Architectural Typography (h1) */}
-      <h1
-        id="hero-title"
-        className="pointer-events-none absolute inset-0 font-sans leading-none font-normal max-md:static max-md:order-1 max-md:mt-8"
-        style={{ fontSize: "clamp(38px, 6.2vw, 84px)" }}
-      >
-        {/* Top-Left Title Block */}
-        <span className="absolute top-[8.5rem] left-10 tracking-tight text-white max-md:static max-md:block max-md:text-left">
+      {/* 7. Asymmetric Architectural Typography (h1) & Scanning Button */}
+      {/* Top-Left Title Block with Scanning Button Directly Underneath */}
+      <div className="absolute top-[8.5rem] left-10 z-20 flex flex-col items-start max-md:static max-md:order-1 max-md:mt-8">
+        <h1
+          id="hero-title"
+          className="font-sans leading-none font-normal tracking-tight text-white max-md:text-left"
+          style={{ fontSize: "clamp(38px, 6.2vw, 84px)" }}
+        >
           <span className="block">AFFECTIVE</span>
           <span className="block text-white/90">INTELLIGENCE</span>
-        </span>
+        </h1>
 
-        {/* Bottom-Right Title Block */}
-        <span className="absolute right-10 bottom-10 text-right tracking-tight text-white max-md:static max-md:block max-md:text-left max-md:mt-4">
-          <span className="block">THAT DECODES</span>
-          <span className="block bg-gradient-to-r from-[#8dd8ff] via-[#69beff] to-[#4c97ff] bg-clip-text text-transparent">
-            HUMAN AFFECT.
-          </span>
+        {/* Scanning Button Under Selected Text */}
+        <div className="mt-6 pointer-events-auto">
+          <button
+            type="button"
+            onClick={handleStartScanning}
+            className="gradient-frame group relative isolate flex h-12 items-center gap-3 overflow-hidden rounded-md bg-black px-6 shadow-xl transition-all duration-200 active:scale-98 hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-[#4c97ff]"
+          >
+            {/* Subtle gradient hover wash */}
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 bg-gradient-to-r from-[#8dd8ff] via-[#69beff] to-[#4c97ff] opacity-10 transition-opacity duration-300 group-hover:opacity-25"
+            />
+
+            <ScanFace className="size-4 text-[#8dd8ff] transition-transform duration-300 group-hover:scale-110" />
+
+            <span className="relative z-10 bg-gradient-to-r from-[#8dd8ff] via-[#69beff] to-[#4c97ff] bg-clip-text font-mono text-xs font-semibold tracking-wider text-transparent uppercase">
+              Start Scanning
+            </span>
+
+            {/* Staggered Chevrons Trail (>>>>>) */}
+            <svg
+              aria-hidden="true"
+              viewBox="138 19.5 42 15"
+              className="z-10 h-3.5 w-10 transition-transform duration-300 group-hover:translate-x-1"
+            >
+              <defs>
+                <linearGradient id="cta-chevrons-sub" gradientUnits="userSpaceOnUse" x1="0" y1="27" x2="204" y2="27">
+                  <stop stopColor="#8dd8ff" />
+                  <stop offset="0.45" stopColor="#69beff" />
+                  <stop offset="1" stopColor="#4c97ff" />
+                </linearGradient>
+              </defs>
+              {[0, 9, 18, 27, 36].map((offset) => (
+                <path
+                  key={offset}
+                  d="M138 34.1444L138.614 34.5L144 26.9725L138.614 19.5L138 19.8556L138 26.1513L138.818 26.9725L138 27.7937L138 34.1444Z"
+                  fill="url(#cta-chevrons-sub)"
+                  transform={`translate(${offset} 0)`}
+                />
+              ))}
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Bottom-Right Title Block */}
+      <div
+        className="pointer-events-none absolute right-10 bottom-10 z-20 text-right tracking-tight text-white font-sans leading-none font-normal max-md:static max-md:order-1 max-md:text-left max-md:mt-4"
+        style={{ fontSize: "clamp(38px, 6.2vw, 84px)" }}
+        aria-hidden="true"
+      >
+        <span className="block">THAT DECODES</span>
+        <span className="block bg-gradient-to-r from-[#8dd8ff] via-[#69beff] to-[#4c97ff] bg-clip-text text-transparent">
+          HUMAN AFFECT.
         </span>
-      </h1>
+      </div>
 
       {/* 8. Precision Floating Telemetry Statistics */}
       <div className="contents max-md:order-2 max-md:mt-6 max-md:flex max-md:flex-col max-md:gap-3">

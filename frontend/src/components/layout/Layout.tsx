@@ -1,8 +1,11 @@
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 
 export function Layout() {
+  const location = useLocation();
+  const isScanPage = location.pathname === "/scan";
+
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <a
@@ -15,7 +18,7 @@ export function Layout() {
       <main id="main-content" tabIndex={-1} className="flex-1 outline-none">
         <Outlet />
       </main>
-      <Footer />
+      {!isScanPage && <Footer />}
     </div>
   );
 }

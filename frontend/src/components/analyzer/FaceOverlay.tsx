@@ -1,7 +1,6 @@
 import { m } from "motion/react";
-import { EmotionIcon } from "@/components/analyzer/EmotionIcon";
-import { EMOTIONS_BY_LABEL } from "@/lib/emotions";
 import type { FaceResult } from "@/types/api";
+import { EMOTIONS_BY_LABEL } from "@/lib/emotions";
 
 interface FaceOverlayProps {
   faces: FaceResult[];
@@ -23,18 +22,16 @@ export function FaceOverlay({
   }
 
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
       {faces.map((face, index) => {
         const isSelected = face.id === selectedFaceId;
         const meta = EMOTIONS_BY_LABEL[face.emotion];
-        const emotionColor = meta?.colorVar ?? "var(--primary)";
+        const emotionColor = meta?.colorVar ?? "#4c97ff";
 
         const leftPercent = (face.box.x / imageWidth) * 100;
         const topPercent = (face.box.y / imageHeight) * 100;
         const widthPercent = (face.box.width / imageWidth) * 100;
         const heightPercent = (face.box.height / imageHeight) * 100;
-
-        const isCompact = widthPercent < 14;
 
         return (
           <m.button
@@ -46,10 +43,10 @@ export function FaceOverlay({
             initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.2, delay: index * 0.04, ease: "easeOut" }}
-            className={`pointer-events-auto absolute rounded-xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
+            className={`pointer-events-auto absolute rounded-xs transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4c97ff] ${
               isSelected
-                ? "border-2 shadow-md ring-1 ring-black/20"
-                : "border border-white/70 bg-white/10 hover:border-white hover:bg-white/20"
+                ? "border-2 shadow-[0_0_15px_rgba(76,151,255,0.4)]"
+                : "border border-white/60 bg-white/5 hover:border-white hover:bg-white/10"
             }`}
             style={{
               left: `${leftPercent}%`,
@@ -57,31 +54,39 @@ export function FaceOverlay({
               width: `${widthPercent}%`,
               height: `${heightPercent}%`,
               borderColor: isSelected ? emotionColor : undefined,
-              backgroundColor: isSelected ? "rgba(0, 0, 0, 0.08)" : undefined,
+              backgroundColor: isSelected ? "rgba(0, 0, 0, 0.15)" : undefined,
             }}
           >
-            {/* Corner Badge with Face Number */}
+            {/* 4 Precision Corner Reticles */}
             <span
-              className={`absolute -top-2.5 -left-2.5 flex size-5 items-center justify-center rounded-full text-[10px] font-bold shadow-xs ${
-                isSelected ? "text-white" : "bg-black/75 text-white"
-              }`}
-              style={{
-                backgroundColor: isSelected ? emotionColor : undefined,
-              }}
-            >
-              {index + 1}
-            </span>
+              aria-hidden="true"
+              className="absolute -top-1 -left-1 size-2 border-t-2 border-l-2"
+              style={{ borderColor: emotionColor }}
+            />
+            <span
+              aria-hidden="true"
+              className="absolute -top-1 -right-1 size-2 border-t-2 border-r-2"
+              style={{ borderColor: emotionColor }}
+            />
+            <span
+              aria-hidden="true"
+              className="absolute -bottom-1 -left-1 size-2 border-b-2 border-l-2"
+              style={{ borderColor: emotionColor }}
+            />
+            <span
+              aria-hidden="true"
+              className="absolute -bottom-1 -right-1 size-2 border-b-2 border-r-2"
+              style={{ borderColor: emotionColor }}
+            />
 
-            {/* Selected Emotion Chip */}
-            {isSelected && !isCompact && (
-              <span
-                className="absolute -bottom-7 left-1/2 -translate-x-1/2 flex items-center gap-1 whitespace-nowrap rounded-md px-2 py-0.5 text-[11px] font-medium text-white shadow-sm"
-                style={{ backgroundColor: emotionColor }}
-              >
-                <EmotionIcon label={face.emotion} size={12} />
-                <span>{face.emotion}</span>
-              </span>
-            )}
+            {/* Corner Badge with Face Number & Emotion Tag */}
+            <span
+              className="absolute -top-3 left-0 flex items-center gap-1 whitespace-nowrap rounded px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-white shadow-md"
+              style={{ backgroundColor: emotionColor }}
+            >
+              <span>#{index + 1}</span>
+              {isSelected && <span>{face.emotion}</span>}
+            </span>
           </m.button>
         );
       })}

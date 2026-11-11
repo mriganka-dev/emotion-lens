@@ -2,7 +2,7 @@ import { CheckCircle2, ShieldCheck, Sparkles } from "lucide-react";
 
 export default function AboutPage() {
   return (
-    <article className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-16 space-y-12">
+    <article className="mx-auto max-w-3xl px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16 space-y-12">
       <header className="space-y-3">
         <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           About Emotion Lens
