@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
 # Model settings
-_model_path_env = os.getenv("MODEL_PATH", "assets/resnext_224_32_10_50.keras")
+_model_path_env = os.getenv("MODEL_PATH", "assets/resnet152_224_32_10_50.keras")
 MODEL_PATH = Path(_model_path_env)
 if not MODEL_PATH.is_absolute():
     MODEL_PATH = BASE_DIR / MODEL_PATH

@@ -11,7 +11,9 @@ export function Logo() {
       <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-xs">
         <ScanFace className="size-5" />
       </span>
-      <span className="text-base font-semibold tracking-tight text-foreground">Emotion Lens</span>
+      <span className="text-base font-semibold tracking-tight text-foreground">
+        Emotion Lens
+      </span>
     </Link>
   );
 }

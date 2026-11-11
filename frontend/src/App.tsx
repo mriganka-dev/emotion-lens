@@ -5,6 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useWarmBackend } from "@/hooks/useWarmBackend";
 import HomePage from "@/pages/HomePage";
 
+const ScanPage = lazy(() => import("@/pages/ScanPage"));
 const AboutPage = lazy(() => import("@/pages/AboutPage"));
 const NotFoundPage = lazy(() => import("@/pages/NotFoundPage"));
 
@@ -27,6 +28,8 @@ function RouteTitle() {
   useEffect(() => {
     if (location.pathname === "/") {
       document.title = "Emotion Lens";
+    } else if (location.pathname === "/scan") {
+      document.title = "Face Scanner - Emotion Lens";
     } else if (location.pathname === "/about") {
       document.title = "About - Emotion Lens";
     } else {
@@ -46,6 +49,14 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
+          <Route
+            path="/scan"
+            element={
+              <Suspense fallback={<PageFallback />}>
+                <ScanPage />
+              </Suspense>
+            }
+          />
           <Route
             path="/about"
             element={

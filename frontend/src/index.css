@@ -161,3 +161,23 @@
 .animate-scanline {
   animation: scanline 2.4s ease-in-out infinite;
 }
+
+/* Evolve Signature Gradient Frame Border */
+.gradient-frame {
+  position: relative;
+  isolation: isolate;
+}
+
+.gradient-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  background: linear-gradient(90deg, #8dd8ff 0%, #69beff 45%, #4c97ff 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  border-radius: inherit;
+}

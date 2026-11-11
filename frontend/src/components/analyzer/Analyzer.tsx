@@ -5,7 +5,6 @@ import { EmotionCard } from "@/components/analyzer/EmotionCard";
 import { FaceSelector } from "@/components/analyzer/FaceSelector";
 import { ImagePreview } from "@/components/analyzer/ImagePreview";
 import { ResultSkeleton } from "@/components/analyzer/ResultSkeleton";
-import { SamplePhotos } from "@/components/analyzer/SamplePhotos";
 import { ScoreBars } from "@/components/analyzer/ScoreBars";
 import { StatusMessage } from "@/components/analyzer/StatusMessage";
 import { UploadZone } from "@/components/analyzer/UploadZone";
@@ -117,12 +116,9 @@ export function Analyzer() {
         {liveAnnouncement}
       </div>
 
-      {/* State 1: Idle (Upload zone and sample photos) */}
+      {/* State 1: Idle (Upload zone) */}
       {!selectedFile && (
-        <div className="space-y-6">
-          <UploadZone onFileAccepted={handleFile} onError={(msg) => toast.error(msg)} />
-          <SamplePhotos />
-        </div>
+        <UploadZone onFileAccepted={handleFile} onError={(msg) => toast.error(msg)} />
       )}
 
       {/* Active States: Preview + Result Grid */}
@@ -215,11 +211,31 @@ export function Analyzer() {
                       {/* Primary Emotion Result Card with Spring Animation */}
                       <EmotionCard face={selectedFace} headingRef={resultHeadingRef} />
 
-                      {/* Full 7-Emotion Score Breakdown */}
-                      <div className="rounded-2xl border border-border bg-card p-6 shadow-xs">
-                        <h4 className="text-sm font-semibold tracking-tight text-foreground pb-4 border-b border-border mb-4">
-                          Emotion breakdown
-                        </h4>
+                      {/* Full 7-Emotion Score Breakdown Panel */}
+                      <div className="relative rounded-xl border border-white/15 bg-black/85 p-6 shadow-xl backdrop-blur-xl">
+                        {/* 4 Corner Reticles */}
+                        <span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute top-2 left-2 size-2.5 border-t border-l border-white/20"
+                        />
+                        <span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute top-2 right-2 size-2.5 border-t border-r border-white/20"
+                        />
+                        <span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute bottom-2 left-2 size-2.5 border-b border-l border-white/20"
+                        />
+                        <span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute bottom-2 right-2 size-2.5 border-b border-r border-white/20"
+                        />
+
+                        <div className="border-b border-white/10 pb-3 mb-4">
+                          <h4 className="font-mono text-xs font-semibold uppercase tracking-wider text-white">
+                            Emotion breakdown
+                          </h4>
+                        </div>
                         <ScoreBars scores={selectedFace.scores} />
                       </div>
                     </m.div>
