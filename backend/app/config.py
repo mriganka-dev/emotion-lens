@@ -47,16 +47,21 @@ ALLOWED_IMAGE_FORMATS = ("JPEG", "PNG", "WEBP")
 MAX_IMAGE_SIDE = 1600
 
 # Face detection settings
-HAAR_CASCADE_PATH = Path(cv2.data.haarcascades) / "haarcascade_frontalface_default.xml"
-FACE_SCALE_FACTOR = 1.1
-FACE_MIN_NEIGHBORS = 5
+YUNET_MODEL_PATH = BASE_DIR / "assets" / "face_detection_yunet_2023mar.onnx"
+FACE_CONFIDENCE_THRESHOLD = float(os.getenv("FACE_CONFIDENCE_THRESHOLD", "0.75"))
+FACE_MIN_RELATIVE_AREA = float(os.getenv("FACE_MIN_RELATIVE_AREA", "0.25"))
+HAAR_CASCADE_PATH = Path(cv2.data.haarcascades) / "haarcascade_frontalface_alt2.xml"
+PROFILE_CASCADE_PATH = Path(cv2.data.haarcascades) / "haarcascade_profileface.xml"
+FACE_SCALE_FACTOR = 1.05
+FACE_MIN_NEIGHBORS = 4
 FACE_MIN_SIZE_PIXELS = 30
-FACE_MIN_SIZE_RATIO = 0.06
-FACE_MAX_COUNT = 10
+FACE_MIN_SIZE_RATIO = 0.025
+FACE_MAX_COUNT = 50
 FACE_CROP_MARGIN = 0.10
+FACE_NMS_THRESHOLD = 0.3
 
 # Fallback to whole image if no face is detected
-FALLBACK_ENABLED = True
+FALLBACK_ENABLED = False
 FALLBACK_MAX_SIDE = 400
 FALLBACK_MIN_ASPECT_RATIO = 0.75
 FALLBACK_MAX_ASPECT_RATIO = 1.33
